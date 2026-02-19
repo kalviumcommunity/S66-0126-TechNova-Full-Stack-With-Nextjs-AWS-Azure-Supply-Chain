@@ -1,0 +1,207 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model for authentication and user management
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  phone     String?
+  role      UserRole @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  bookings    Booking[]
+  reports     Report[]
+  parkingLots ParkingLot[]
+
+  @@index([email])
+  @@map("users")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  PARKING_OWNER
+}
+
+// ParkingLot model for parking lot information
+model ParkingLot {
+  id           String   @id @default(cuid())
+  name         String
+  address      String
+  city         City
+  latitude     Float
+  longitude    Float
+  totalSpots   Int
+  pricePerHour Float
+  amenities    String[] // Array of amenities like ["CCTV", "Security", "Covered"]
+  imageUrl     String?
+  isActive     Boolean  @default(true)
+  ownerId      String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  owner        User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  parkingSpots ParkingSpot[]
+  reports      Report[]
+
+  @@index([city])
+  @@index([latitude, longitude])
+  @@index([ownerId])
+  @@map("parking_lots")
+}
+
+enum City {
+  MUMBAI
+  DELHI
+  BANGALORE
+  PUNE
+  CHENNAI
+}
+
+// ParkingSpot model for individual parking spots
+model ParkingSpot {
+  id           String          @id @default(cuid())
+  parkingLotId String
+  spotNumber   String
+  type         VehicleType
+  status       SpotStatus      @default(AVAILABLE)
+  lastUpdated  DateTime        @default(now())
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  // Relations
+  parkingLot ParkingLot @relation(fields: [parkingLotId], references: [id], onDelete: Cascade)
+  bookings   Booking[]
+  sensor     Sensor?
+
+  @@unique([parkingLotId, spotNumber])
+  @@index([parkingLotId])
+  @@index([status])
+  @@map("parking_spots")
+}
+
+enum VehicleType {
+  TWO_WHEELER
+  FOUR_WHEELER
+}
+
+enum SpotStatus {
+  AVAILABLE
+  OCCUPIED
+  RESERVED
+  MAINTENANCE
+}
+
+// Booking model for parking spot reservations
+model Booking {
+  id             String        @id @default(cuid())
+  userId         String
+  parkingSpotId  String
+  startTime      DateTime
+  endTime        DateTime
+  status         BookingStatus @default(PENDING)
+  totalPrice     Float
+  paymentStatus  PaymentStatus @default(PENDING)
+  paymentMethod  String?
+  transactionId  String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  // Relations
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parkingSpot ParkingSpot @relation(fields: [parkingSpotId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([parkingSpotId])
+  @@index([startTime, endTime])
+  @@index([status])
+  @@map("bookings")
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+// Report model for crowd-sourced parking availability reports
+model Report {
+  id           String     @id @default(cuid())
+  userId       String
+  parkingLotId String
+  reportType   ReportType
+  description  String?
+  isVerified   Boolean    @default(false)
+  createdAt    DateTime   @default(now())
+
+  // Relations
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parkingLot ParkingLot @relation(fields: [parkingLotId], references: [id], onDelete: Cascade)
+
+  @@index([parkingLotId])
+  @@index([createdAt])
+  @@map("reports")
+}
+
+enum ReportType {
+  AVAILABILITY
+  FULL
+  ISSUE
+  PRICE_UPDATE
+}
+
+// Sensor model for IoT sensor data simulation
+model Sensor {
+  id             String       @id @default(cuid())
+  parkingSpotId  String       @unique
+  sensorType     SensorType   @default(ULTRASONIC)
+  status         SensorStatus @default(ACTIVE)
+  batteryLevel   Int          @default(100)
+  lastPing       DateTime     @default(now())
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  // Relations
+  parkingSpot ParkingSpot @relation(fields: [parkingSpotId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([lastPing])
+  @@map("sensors")
+}
+
+enum SensorType {
+  ULTRASONIC
+  INFRARED
+  MAGNETIC
+  CAMERA
+}
+
+enum SensorStatus {
+  ACTIVE
+  INACTIVE
+  MAINTENANCE
+  ERROR
+}
