@@ -33,9 +33,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# markdown files
+# markdown files (exclude all except README.md)
 *.md
-!package.json
+!README.md
 
 # docs
 /docs
