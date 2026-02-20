@@ -90,7 +90,6 @@ export function withValidation<
     query?: TQuery
     params?: TParams
     request: NextRequest
-    context?: { params: Record<string, string> }
   }) => Promise<NextResponse>,
   schemas?: {
     body?: ZodSchema<TBody>
@@ -100,7 +99,7 @@ export function withValidation<
 ) {
   return async (
     request: NextRequest,
-    context?: { params: Record<string, string> }
+    context?: { params: Promise<Record<string, string>> }
   ): Promise<NextResponse> => {
     try {
       const validated: {
@@ -108,8 +107,7 @@ export function withValidation<
         query?: TQuery
         params?: TParams
         request: NextRequest
-        context?: { params: Record<string, string> }
-      } = { request, context }
+      } = { request }
 
       // Validate body if schema provided
       if (schemas?.body) {
@@ -123,7 +121,8 @@ export function withValidation<
 
       // Validate route params if schema provided
       if (schemas?.params && context?.params) {
-        validated.params = validateParams(schemas.params, context.params)
+        const resolvedParams = await context.params
+        validated.params = validateParams(schemas.params, resolvedParams)
       }
 
       return await handler(validated)
