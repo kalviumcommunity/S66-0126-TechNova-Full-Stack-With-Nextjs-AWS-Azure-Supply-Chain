@@ -6,9 +6,10 @@ import { NextRequest, NextResponse } from 'next/server'
  * @public
  */
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id: _id } = await params
   // TODO: Implement get parking lot by ID
   // - Fetch parking lot with available spots count
   // - Include amenities and pricing
@@ -32,9 +33,10 @@ export async function GET(
  * @protected - ADMIN, PARKING_OWNER (own lots only)
  */
 export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id: _id } = await params
   // TODO: Implement parking lot update
   // - Authenticate and authorize user
   // - Validate ownership (if PARKING_OWNER)
@@ -59,9 +61,10 @@ export async function PUT(
  * @protected - ADMIN only
  */
 export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id: _id } = await params
   // TODO: Implement parking lot deletion
   // - Authenticate and authorize (ADMIN only)
   // - Check for active bookings

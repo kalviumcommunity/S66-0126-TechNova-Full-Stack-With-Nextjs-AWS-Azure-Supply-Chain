@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
  * User login endpoint
  * @public
  */
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   // TODO: Implement user login logic
   // - Validate credentials
   // - Compare password hash

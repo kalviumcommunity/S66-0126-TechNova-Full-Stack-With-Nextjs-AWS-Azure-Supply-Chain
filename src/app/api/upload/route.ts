@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
  * Upload images to S3 (for parking lot images)
  * @protected - ADMIN, PARKING_OWNER
  */
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   // TODO: Implement file upload
   // - Authenticate and authorize user
   // - Validate file type and size

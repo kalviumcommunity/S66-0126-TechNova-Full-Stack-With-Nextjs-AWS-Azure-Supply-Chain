@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
  * List all parking lots with optional filters
  * @public
  */
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   // TODO: Implement parking lot listing
   // - Parse query parameters (city, pricePerHour, availability)
   // - Apply filters and pagination
@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
  * Create a new parking lot
  * @protected - ADMIN, PARKING_OWNER
  */
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   // TODO: Implement parking lot creation
   // - Authenticate and authorize user
   // - Validate input data

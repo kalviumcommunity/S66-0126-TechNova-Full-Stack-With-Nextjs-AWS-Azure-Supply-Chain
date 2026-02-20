@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
  * Refresh access token endpoint
  * @public
  */
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   // TODO: Implement token refresh logic
   // - Validate refresh token
   // - Generate new access token

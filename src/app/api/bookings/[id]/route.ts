@@ -6,9 +6,10 @@ import { NextRequest, NextResponse } from 'next/server'
  * @protected
  */
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id: _id } = await params
   // TODO: Implement get booking by ID
   // - Authenticate user
   // - Verify ownership or admin role
@@ -32,9 +33,10 @@ export async function GET(
  * @protected
  */
 export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id: _id } = await params
   // TODO: Implement booking update/cancellation
   // - Authenticate user
   // - Verify ownership
@@ -59,9 +61,10 @@ export async function PUT(
  * @protected - ADMIN
  */
 export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id: _id } = await params
   // TODO: Implement booking deletion
   // - Authenticate and authorize (ADMIN only)
   // - Delete booking record

@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
  * List user's bookings
  * @protected
  */
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   // TODO: Implement get user bookings
   // - Authenticate user
   // - Fetch bookings for authenticated user
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
  * Create a new booking
  * @protected
  */
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   // TODO: Implement booking creation
   // - Authenticate user
   // - Validate booking data

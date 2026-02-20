@@ -1,4 +1,3 @@
-import { NextRequest } from 'next/server'
 import prisma from '@/lib/prisma'
 import { successResponse, errorResponse } from '@/lib/api-response'
 import { HTTP_STATUS, ERROR_CODES } from '@/types/api'
@@ -10,7 +9,7 @@ import { HTTP_STATUS, ERROR_CODES } from '@/types/api'
  * Returns the health status of the API and its dependencies
  * This endpoint is public and does not require authentication
  */
-export async function GET(request: NextRequest) {
+export async function GET() {
   const startTime = Date.now()
 
   try {

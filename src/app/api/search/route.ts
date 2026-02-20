@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
  * Search parking lots by location, name, or filters
  * @public
  */
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   // TODO: Implement parking lot search
   // - Parse search query and filters
   // - Perform text search on name and address
