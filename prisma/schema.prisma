@@ -58,9 +58,12 @@ model ParkingLot {
   parkingSpots ParkingSpot[]
   reports      Report[]
 
-  @@index([city])
-  @@index([latitude, longitude])
-  @@index([ownerId])
+  // Performance indexes for common queries
+  @@index([city]) // Filter by city
+  @@index([latitude, longitude]) // Geospatial queries for nearby parking
+  @@index([ownerId]) // Owner's parking lots
+  @@index([city, isActive]) // Active lots by city
+  @@index([pricePerHour]) // Price-based filtering
   @@map("parking_lots")
 }
 
@@ -89,8 +92,12 @@ model ParkingSpot {
   sensor     Sensor?
 
   @@unique([parkingLotId, spotNumber])
-  @@index([parkingLotId])
-  @@index([status])
+  // Performance indexes for availability queries
+  @@index([parkingLotId]) // Spots by parking lot
+  @@index([status]) // Filter by availability status
+  @@index([parkingLotId, status]) // Composite: available spots in a lot
+  @@index([type, status]) // Filter by vehicle type and availability
+  @@index([lastUpdated]) // Recent status changes
   @@map("parking_spots")
 }
 
@@ -125,10 +132,14 @@ model Booking {
   user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   parkingSpot ParkingSpot @relation(fields: [parkingSpotId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
-  @@index([parkingSpotId])
-  @@index([startTime, endTime])
-  @@index([status])
+  // Performance indexes for booking queries
+  @@index([userId]) // User's bookings
+  @@index([parkingSpotId]) // Spot's booking history
+  @@index([startTime, endTime]) // Time-based queries
+  @@index([status]) // Filter by booking status
+  @@index([userId, status]) // User's active/pending bookings
+  @@index([createdAt]) // Recent bookings
+  @@index([paymentStatus]) // Filter by payment status
   @@map("bookings")
 }
 
@@ -161,8 +172,13 @@ model Report {
   user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   parkingLot ParkingLot @relation(fields: [parkingLotId], references: [id], onDelete: Cascade)
 
-  @@index([parkingLotId])
-  @@index([createdAt])
+  // Performance indexes for report queries
+  @@index([parkingLotId]) // Reports for a parking lot
+  @@index([createdAt]) // Recent reports (time-series)
+  @@index([userId]) // User's report history
+  @@index([reportType]) // Filter by report type
+  @@index([parkingLotId, createdAt]) // Recent reports for a lot
+  @@index([isVerified]) // Filter verified reports
   @@map("reports")
 }
 
@@ -187,8 +203,12 @@ model Sensor {
   // Relations
   parkingSpot ParkingSpot @relation(fields: [parkingSpotId], references: [id], onDelete: Cascade)
 
-  @@index([status])
-  @@index([lastPing])
+  // Performance indexes for sensor monitoring
+  @@index([status]) // Filter by sensor status
+  @@index([lastPing]) // Detect inactive sensors
+  @@index([parkingSpotId]) // Sensor for a specific spot
+  @@index([batteryLevel]) // Low battery alerts
+  @@index([status, lastPing]) // Active sensors with recent pings
   @@map("sensors")
 }
 
