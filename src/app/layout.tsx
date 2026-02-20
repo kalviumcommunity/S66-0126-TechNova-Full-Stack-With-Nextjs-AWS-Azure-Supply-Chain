@@ -1,5 +1,8 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { AuthProvider } from '@/context/AuthContext'
+import { UIProvider } from '@/context/UIContext'
+import { SearchProvider } from '@/context/SearchContext'
 
 export const metadata: Metadata = {
   title: 'ParkPulse - Smart Parking Discovery',
@@ -13,7 +16,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AuthProvider>
+          <UIProvider>
+            <SearchProvider>{children}</SearchProvider>
+          </UIProvider>
+        </AuthProvider>
+      </body>
     </html>
   )
 }
