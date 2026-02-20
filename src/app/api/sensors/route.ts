@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
  * List all sensors
  * @protected - ADMIN, PARKING_OWNER
  */
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   // TODO: Implement get sensors
   // - Authenticate and authorize user
   // - Fetch sensors with status and battery level

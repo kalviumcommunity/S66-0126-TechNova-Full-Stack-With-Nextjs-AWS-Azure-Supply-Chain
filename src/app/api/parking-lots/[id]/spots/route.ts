@@ -6,9 +6,10 @@ import { NextRequest, NextResponse } from 'next/server'
  * @public
  */
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id: _id } = await params
   // TODO: Implement get parking spots
   // - Fetch all spots for the parking lot
   // - Filter by status (available, occupied, reserved)

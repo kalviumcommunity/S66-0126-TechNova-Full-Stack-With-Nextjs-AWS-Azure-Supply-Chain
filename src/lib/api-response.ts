@@ -1,11 +1,6 @@
 import { NextResponse } from 'next/server'
 import { ZodError } from 'zod'
-import {
-  ApiError,
-  handlePrismaError,
-  handleZodError,
-  isOperationalError,
-} from './api-error'
+import { ApiError, handlePrismaError, handleZodError } from './api-error'
 import {
   HTTP_STATUS,
   ERROR_CODES,

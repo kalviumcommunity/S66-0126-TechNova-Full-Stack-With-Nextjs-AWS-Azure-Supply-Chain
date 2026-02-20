@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
  * User registration endpoint
  * @public
  */
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   // TODO: Implement user signup logic
   // - Validate input (email, password, name, phone)
   // - Hash password with bcrypt

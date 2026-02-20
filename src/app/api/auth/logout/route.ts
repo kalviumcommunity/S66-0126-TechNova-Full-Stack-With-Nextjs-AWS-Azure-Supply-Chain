@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
  * User logout endpoint
  * @protected
  */
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   // TODO: Implement user logout logic
   // - Invalidate refresh token
   // - Add access token to blacklist (optional)

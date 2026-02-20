@@ -6,9 +6,10 @@ import { NextRequest, NextResponse } from 'next/server'
  * @protected - ADMIN, PARKING_OWNER
  */
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id: _id } = await params
   // TODO: Implement get sensor by ID
   // - Authenticate and authorize user
   // - Fetch sensor with parking spot details
@@ -31,9 +32,10 @@ export async function GET(
  * @protected - ADMIN, PARKING_OWNER, IoT devices
  */
 export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id: _id } = await params
   // TODO: Implement sensor update
   // - Authenticate (API key for IoT devices)
   // - Update sensor data (battery, status, last ping)
